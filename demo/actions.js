@@ -6,8 +6,8 @@ $(document).ready(function() {
 	$('.tweetify').tweetify();
 	
 	// customButton = false, hence we're using twitters original.
-	$('.tweetify2').tweetify({
-		customButton:false
+	$('.tweetify-standard').tweetify({
+		customButton : false
 	});
 	
 });

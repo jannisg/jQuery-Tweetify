@@ -4,84 +4,87 @@
 		tweetify : function( options ) {
 			
 			var internal = {
-				'baseurl' : 'http://twitter.com/share',
+				'baseurl' 		: 'http://twitter.com/share',
 				'buttonClass' : 'twitter-share-button',
-				'attrs' : [ 'url' , 'via' , 'text' , 'related' , 'count' , 'lang' , 'counturl' ]
-			}
-			
-			var options = $.extend( {} , internal , $.fn.tweetify.defaults , options ), o = options;
-			var pageurl = window.location.protocol+'//'+window.location.host+window.location.pathname;
-			var twitterJs = '<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>';
+				'scriptTag' 	: '<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>',
+				'attrs' 			: [ 'url' , 'via' , 'text' , 'related' , 'count' , 'lang' , 'counturl' , 'extension' ]
+			};
+			var options = $.extend( {} , $.fn.tweetify.defaults , options );
+			var ignite = false; // a switch to capture if any tweet buttons are using the official script.
 			
 			this.each(function() {
-				var self = $(this);
-				// store specific data to include in this button
-				var data = o, defaultvalues = data.queries, myValues = {};
+				var self = $(this), o = options, defaultvalues = o.queries, myValues = {};
 
-				$.each( internal.attrs , function(i, val) {
-				  if ( typeof self.data(val) !== "undefined" ) { 
-						myValues[val] = self.data(val);
-				  } else {
-						myValues[val] = defaultvalues[val];
+				// loop through all possible attrs and copy the current (markup defined ones) into the myValues object.
+				$.each( internal.attrs , function(i, key) {
+				  if ( typeof self.data(key) !== "undefined" ) { 
+						myValues[key] = self.data(key);
+				  } else if ( typeof defaultvalues[key] !== "undefined" ) {
+						myValues[key] = defaultvalues[key];
+					} else {
+						myValues[key] = '';
 					}
 				});
-				
-				// loop through existing data-attributes and if they're twitter related override the defaults.
-				$.each( self.data() , function(key, val) {
-					if ( $.inArray( key , internal.attrs ) ) { 
-						myValues[key] = val; // if key is a twitter api attribute then store it, overriding the defaults.
-					}
-				});
-			
-				// attach custom hook at the end of ones url, eg: for adding a query string.
-				if ( typeof self.data('extension') !== "undefined" ) {
-					// store the selector string.
-					var extension = self.data('extension');
-					// if not a string make it one.
-					if ( typeof extension !== "string" ) { extension = self.data('extension').toString(); }
-					// append this sting to the URL
-					defaultvalues.url += encodeURIComponent( extension );
+
+				// if the URL is unspecified use the document url.
+				var sharingThisPage = false;
+				if ( myValues.url == "" ) { 
+					var pageurl = window.location.href;
+					pageurl = encodeURIComponent( pageurl );
+					myValues.url = pageurl;
+					sharingThisPage = true;
 				}
-
+				// Add the extension if specified
+				if ( myValues.extension ) {
+					if ( !sharingThisPage ) { 
+						myValues.url = encodeURIComponent( myValues.url );
+					}
+					myValues.url += encodeURIComponent( myValues.extension );
+				}
+				
+				
+				
 				if ( o.customButton ) { 
-					// if we have a custom button to display, don't attach the script and instead create some custom share urls.
-					// generate a encoded URL with all parameters.
-					var generate = '';
-					$.each( defaultvalues , function( key, val ) {
-						if ( val != '' ) { 
-					  	generate += '&'+key+'='+encodeURIComponent( val );
+					// this is using a custom graphic for the button so don't ignite when JS is added.
+					var queryString = '';
+					$.each( myValues , function( key , val ) {
+						if ( val && key != 'extension' ) { 
+							queryString += '&'+key+'='+val;
 						}
 					});
-					var generate = generate.replace( /^&/ , '?'); // make the first ampersand a questionmark to begin the query string that is being attached to the share URL
-					
-					self.attr('href', internal.baseurl+generate ).bind('click', function(e) {
+					queryString = queryString.replace( /^&/ , '?' );
+					var fullurl = internal.baseurl+queryString
+
+					self.attr( 'href' , fullurl ).bind('click', function(e) {
+						var width = 550, height = 450, top = ((document.height/2) - (height/2)), left = ((document.width/2) - (width/2));
 					  e.preventDefault();
-						window.open(this.href,'_blank','height=450,width=550');
+						window.open(this.href,'_blank','height='+height+',width='+width+',top='+top+',left='+left);
 					});
 					
 				} else {
-					// generate the data-attributes so that once twitter.js ignites it will pick up on our custom options.
-					$.each( defaultvalues , function( key , val ) {
-						if ( val != '' && typeof self.data( key ) === "undefined" ) { 
-							self.attr('data-'+key , val );
+					// add the default class and all attributes so that the widgets.js picks up on it.
+					$.each( myValues , function( key , val ) {
+						if ( key == 'url' && typeof self.data(key) === "undefined" ) { 
+							var url = decodeURIComponent( val );
+							self.attr( 'data-'+key , url );
+						} else if ( val && key != 'extension' && typeof self.data(key) === "undefined" ) {
+							self.attr( 'data-'+key , val )
 						}
 					});
-					// add the default href
-					// add the button class so that the js picks up on it.
-					self.attr('href', myValues.url ).addClass( internal.buttonClass ); 
+					self.addClass( internal.buttonClass );
+					ignite = true;
 				}
 
-			}); // <= end the each loop
+			}); // end each loop
 			
-			if ( !options.customButton ) { 
-				// if we're using the default button just attach the script which will create the default buttons.
-				$('body').append( twitterJs ); // attach script after attributes have been filled to ignite functionality
+			if ( ignite ) { 
+				$('body').append( internal.scriptTag );
 			}
 			
 			// return the jquery objects, keeping things chainable.
 			return this;
+			
 		}
-		
 	});
 	
 
@@ -92,7 +95,7 @@
 			'text'		: '',
 			'related' : 'jannisg',
 			'count' 	: 'none',
-			'lang'		: 'en',
+			'lang'		: '',
 			'counturl': ''
 		},
 		'customButton' : false
