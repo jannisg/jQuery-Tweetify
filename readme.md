@@ -1,16 +1,14 @@
 # jQuery Tweetify
----
+
 ## Purpose
 A simple script that attaches to user defined elements to make them valid Tweet buttons, either using a custom generated (on the fly) href with a build in popup window script or by utilizing the default Twitter widgets.js file.
 
----
 ## History
 I was working on a project where we had to handover code to a third party that unfortunately didn't really know what they were doing.
 Since we had no choice in the matter we had to foolproof our code to the point where things were mostly automated scripts that this third party couldn't break easily yet allowed for relative customizability down the road.
 
 Out of this necessity I created Tweetify.
 
----
 ## Usage
 Simple create an `<a>` tag and add your data-attributes onto it.
 The plugin will then take care of the rest, you can leave the attributes incomplete, for example don't mention your `data-via` attribute and instead set it globally in the js.
@@ -19,7 +17,6 @@ You can also give your button a custom graphic and all you have to do is call th
 
 You can mix and match default twitter and custom button graphics as you please.
 
----
 ## Demo
 
 ### Settings
@@ -44,6 +41,7 @@ $(document).ready(function() {
 
 For the purpose of the demo below, `.tweetify` is set to use a custom button graphic/text and `.tweetify-default` is using the default twitter `widgets.js` javascript that creates the `iframe` with the default button graphic inside.
 
+---
 ### 1. Basic
 
 ```javascript
@@ -56,6 +54,7 @@ Because we called this button with the class `.tweetify` (which is set to have a
 On click it will trigger a `window.open` at the default twitter size, with "My custom share text." as the pre written content of the share box.
 Since my plugin settings also set my twitter account as the `related` and `via` options, it will also show the `via [twittername]` in the box.
 
+---
 ### 2. Custom
 
 ```javascript
@@ -70,6 +69,7 @@ In this case (let's assume my domain is `http://my.customdomain.com`), the share
 
 This feature only exists because I needed to attach custom query strings indicating a certain section on a page to a couple of links so I figured I might as well give everyone the option to do the same.
 
+---
 ### 3. Standard
 
 ```javascript
@@ -89,7 +89,6 @@ $('body').append('<script type="text/javascript" src="http://platform.twitter.co
     
 Which will then of course recognize this as a default button and place its iframe in place of the above code.
 
----
 ## Todo
 
 * Cross browser testing
