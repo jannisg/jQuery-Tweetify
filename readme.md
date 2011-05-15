@@ -24,23 +24,23 @@ You can mix and match default twitter and custom button graphics as you please.
 
 ### Settings
 
-		```javascript
-    $(document).ready(function() {
-      
-      // the default is false, so that default twitter iframes are generated.
-      // In this example however we're setting it globally to default to custom graphics/text.
-      $.fn.tweetify.defaults.customButton = true;
+```javascript
+$(document).ready(function() {
 
-      // Show no default button, use custom generated URL to trigger popup content
-      $('.tweetify').tweetify();
+  // the default is false, so that default twitter iframes are generated.
+  // In this example however we're setting it globally to default to custom graphics/text.
+  $.fn.tweetify.defaults.customButton = true;
 
-      // customButton = false, hence we're using twitters original.
-      $('.tweetify-standard').tweetify({
-        customButton : false
-      });
+  // Show no default button, use custom generated URL to trigger popup content
+  $('.tweetify').tweetify();
 
-    });
-    ```
+  // customButton = false, hence we're using twitters original.
+  $('.tweetify-standard').tweetify({
+    customButton : false
+  });
+
+});
+```
 
 For the purpose of the demo below, `.tweetify` is set to use a custom button graphic/text and `.tweetify-default` is using the default twitter `widgets.js` javascript that creates the `iframe` with the default button graphic inside.
 
