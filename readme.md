@@ -24,6 +24,7 @@ You can mix and match default twitter and custom button graphics as you please.
 
 ### Settings
 
+		```javascript
     $(document).ready(function() {
       
       // the default is false, so that default twitter iframes are generated.
@@ -39,15 +40,17 @@ You can mix and match default twitter and custom button graphics as you please.
       });
 
     });
-    
+    ```
 
 For the purpose of the demo below, `.tweetify` is set to use a custom button graphic/text and `.tweetify-default` is using the default twitter `widgets.js` javascript that creates the `iframe` with the default button graphic inside.
 
 ### 1. Basic
 
-    <a href="#" class="tweetify" data-text="My custom share text.">
+    ```javascript
+		<a href="#" class="tweetify" data-text="My custom share text.">
       My Twitter Text Button.
     </a>
+		```
     
 Because we called this button with the class `.tweetify` (which is set to have a custom button graphic) we get a pure text tweet button.
 On click it will trigger a `window.open` at the default twitter size, with "My custom share text." as the pre written content of the share box.
@@ -55,28 +58,34 @@ Since my plugin settings also set my twitter account as the `related` and `via` 
 
 ### 2. Custom
 
-    <a href="#" class="tweetify" data-extension="/#!/hashtagbaby">
+    ```javascript
+		<a href="#" class="tweetify" data-extension="/#!/hashtagbaby">
       <img src="twittericon.png" alt="" width="24" height="24" />
     </a>
+		```
     
 Once again we're using a non-default button however because we've got an image tag inside this will be the clickable target of this tweet button (you could just as well style it in your css with a background image).
 You can also see a custom data attribute called `data-extension`. This is an additional attribute that is of course completely optional but does allow you to attach anything you wish after your page url.
 In this case (let's assume my domain is `http://my.customdomain.com`), the shared url would become `http://my.customdomain.com/#!/hashtagbaby`.
 
-This feature only exists because I need to attach custom query strings indicated a certain section to a couple of links so I figured I might as well give everyone the option to do the same.
+This feature only exists because I needed to attach custom query strings indicating a certain section on a page to a couple of links so I figured I might as well give everyone the option to do the same.
 
 ### 3. Standard
 
+		```javascript
     <a href="#" class="tweetify-standard" data-count="horizontal">
       Another one using the default script
     </a>
+		```
     
 As you would expect this button is simply using the default `widgets.js` that Twitter maintains.
 The script will run adding your global options such as "share url" (or if unspecified use the current page url), custom `related` and `via` twitter usernames will of course honor native settings such as the `data-count` attributes as well.
 
 Upon running (after all buttons have been looped over) the script will attach twitter's own widgets.js file to the bottom of the document.
 
-    $('body').append('<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>')
+    ```javascript
+		$('body').append('<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>')
+		```
     
 Which will then of course recognize this as a default button and place its iframe in place of the above code.
 
