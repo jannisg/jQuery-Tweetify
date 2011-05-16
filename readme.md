@@ -44,7 +44,7 @@ For the purpose of the demo below, `.tweetify` is set to use a custom button gra
 ---
 ### 1. Basic
 
-```javascript
+```html
 <a href="#" class="tweetify" data-text="My custom share text.">
   My Twitter Text Button.
 </a>
@@ -57,7 +57,7 @@ Since my plugin settings also set my twitter account as the `related` and `via` 
 ---
 ### 2. Custom
 
-```javascript
+```html
 <a href="#" class="tweetify" data-extension="/#!/hashtagbaby">
   <img src="twittericon.png" alt="" width="24" height="24" />
 </a>
@@ -72,7 +72,7 @@ This feature only exists because I needed to attach custom query strings indicat
 ---
 ### 3. Standard
 
-```javascript
+```html
 <a href="#" class="tweetify-standard" data-count="horizontal">
   Another one using the default script
 </a>
