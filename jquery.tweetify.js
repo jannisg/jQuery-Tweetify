@@ -91,9 +91,9 @@
 	$.fn.tweetify.defaults = {
 		'queries' : {
 			'url'			: '',
-			'via' 		: 'jannisg',
+			'via' 		: '',
 			'text'		: '',
-			'related' : 'jannisg',
+			'related' : '',
 			'count' 	: 'none',
 			'lang'		: '',
 			'counturl': ''
