@@ -46,19 +46,21 @@
 				
 				if ( o.customButton ) { 
 					// this is using a custom graphic for the button so don't ignite when JS is added.
-					var queryString = '';
+					var queryString = ''; // a var to hold the to-be generated query string
+					// generate the string by looping over all available and non-empty twitter api data attributes generating the proper query url syntax
 					$.each( myValues , function( key , val ) {
-						if ( val && key != 'extension' ) { 
-							queryString += '&'+key+'='+val;
+						if ( val && key != 'extension' ) { // ignore the extension attribute since it's a custom one.
+							queryString += '&'+key+'='+val;  // add the key and value to the querystring.
 						}
 					});
-					queryString = queryString.replace( /^&/ , '?' );
-					var fullurl = internal.baseurl+queryString
-
+					queryString = queryString.replace( /^&/ , '?' ); // change the very first ampersand with a questionmark to begin the query.
+					var fullurl = internal.baseurl+queryString // merge the twitter share url with the generated string.
+					
+					// attach the generated url to the objects href element then bind a custom popup (that look just like the original one) to the object.
 					self.attr( 'href' , fullurl ).bind('click', function(e) {
-						var width = 550, height = 450, top = ((document.height/2) - (height/2)), left = ((document.width/2) - (width/2));
-					  e.preventDefault();
-						window.open(this.href,'_blank','height='+height+',width='+width+',top='+top+',left='+left);
+						var width = 550, height = 450, top = ((document.height/2) - (height/2)), left = ((document.width/2) - (width/2)); // get all positions to center popup
+					  e.preventDefault(); // stop default click (so we don't actually follow the url)
+						window.open(this.href,'_blank','height='+height+',width='+width+',top='+top+',left='+left); // open a popup centered within the viewport
 					});
 					
 				} else {
@@ -71,13 +73,15 @@
 							self.attr( 'data-'+key , val )
 						}
 					});
+					// since the official script needs the buttonClass to pick up on this as a button we'll add it here.
 					self.addClass( internal.buttonClass );
-					ignite = true;
+					ignite = true; // we also set ignite to true so that we can attach the script AFTER all buttons have been looped over.
 				}
 
 			}); // end each loop
 			
-			if ( ignite ) { 
+			// after all looping and data-attribute writing we'll add the official script here to ignite our default buttons.
+			if ( ignite ) {
 				$('body').append( internal.scriptTag );
 			}
 			
