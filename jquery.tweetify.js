@@ -58,7 +58,12 @@
 					
 					// attach the generated url to the objects href element then bind a custom popup (that look just like the original one) to the object.
 					self.attr( 'href' , fullurl ).bind('click', function(e) {
-						var width = 550, height = 450, top = ((document.height/2) - (height/2)), left = ((document.width/2) - (width/2)); // get all positions to center popup
+						var width  = 550, 
+								height = 450, 
+								// get all positions to center popup
+								top 	 = ( ($(window).height()/2) - (height/2) ),
+								left 	 = ( ($(window).width() /2) - (width/2) );
+								
 					  e.preventDefault(); // stop default click (so we don't actually follow the url)
 						window.open(this.href,'_blank','height='+height+',width='+width+',top='+top+',left='+left); // open a popup centered within the viewport
 					});

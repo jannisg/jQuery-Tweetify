@@ -91,5 +91,6 @@ Which will then of course recognize this as a default button and place its ifram
 
 ## Todo
 
+* Add Twitter SSL fallback
 * Cross browser testing
 * Nicer demo page
