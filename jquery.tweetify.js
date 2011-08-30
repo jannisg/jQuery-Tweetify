@@ -36,13 +36,12 @@
 				}
 				// Add the extension if specified
 				if ( myValues.extension ) {
-					if ( !sharingThisPage ) { 
-						myValues.url = encodeURIComponent( myValues.url );
-					}
-					myValues.url += encodeURIComponent( myValues.extension );
+					myValues.url += myValues.extension;
 				}
-				
-				
+				// Encode all values.
+				$.each( myValues, function(key, val) {
+					myValues[key] = encodeURIComponent( val );
+				});
 				
 				if ( o.customButton ) { 
 					// this is using a custom graphic for the button so don't ignite when JS is added.
@@ -55,7 +54,7 @@
 					});
 					queryString = queryString.replace( /^&/ , '?' ); // change the very first ampersand with a questionmark to begin the query.
 					var fullurl = internal.baseurl+queryString // merge the twitter share url with the generated string.
-					
+
 					// attach the generated url to the objects href element then bind a custom popup (that look just like the original one) to the object.
 					self.attr( 'href' , fullurl ).bind('click', function(e) {
 						var width  = 550, 
